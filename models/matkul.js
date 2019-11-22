@@ -3,7 +3,7 @@ const Schema      = mongoose.Schema
  
 let MatkulSchema  = new Schema ({
     nomatkul        : Number,
-    namamatkul      : String,
+    namamatkul      : String,   
     dosen           : String,
     semester        : String,
 })    

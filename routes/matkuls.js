@@ -1,8 +1,8 @@
 const express  = require('express')
 const router   = express.Router();
-const { buat, semua } = require("../actions/Matkul/matkuls")  
+const { buat, semua, update } = require("../actions/Matkul/matkuls")  
 
-router.post("/", async (req, res) => {
+router.post("/buat", async (req, res) => {
     try {
         let data = await buat(req)
 
@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.get("/", async (req, res) => {
+router.get("/getAll", async (req, res) => {
     try {
         let data = await semua()
 
@@ -31,6 +31,34 @@ router.get("/", async (req, res) => {
     } catch(err) {
         return res.status(400).json({
             status: "Error",
+            
+            message: err.message
+        })
+    }
+});
+
+
+
+router.put("/:id", async (req, res) => {
+    let { id } = req.params
+    let updated_data = {
+        nomatkul: req.body.nomatkul,
+        namamatkul: req.body.namamatkul,
+        dosen: req.body.dosen,
+        semester: req.body.semester
+    }
+
+    try {
+        let data = await update(id, updated_data)
+
+        return res.status(200).json({
+            status: "Sukses",
+            data, 
+            message: "Data Mahasiswa berhasil di update !"
+        })
+    } catch(err){
+        return res.status(400).json({
+            status: "Error Bos Hahaha",
             message: err.message
         })
     }

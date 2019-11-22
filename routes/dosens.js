@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { buat, semua, detail, ubah, hapus } = require("../actions/Dosen/dosens");
 
-router.post("/", async (req, res) => {
+router.post("/buat", async (req, res) => {
     try {
         let data = await buat(req)
 
@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.get("/", async (req, res) => {
+router.get("/getAll", async (req, res) => {
     try{
         let data = await semua()
 

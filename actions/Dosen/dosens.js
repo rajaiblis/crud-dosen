@@ -2,13 +2,14 @@
 // nik, nama, email, tlp, matkul
 
 const Dosen = require("../../models/dosen");
+const matkul = require("../../models/matkul");
 
 const buat = async(req) => {
-    let { nik, nama, email, tlp, matkul } = req.body
-    tlp = parseInt(tlp)
+    let { nik, nama, email, tlp, matkul, id_matkul } = req.body
+    // tlp = parseInt(tlp)
     
     var insert_data = {
-        nik, nama, email, tlp, matkul
+        nik, nama, email, tlp, matkul, id_matkul
     }
 
     let data = new Dosen(insert_data)
@@ -24,18 +25,14 @@ const buat = async(req) => {
 
 const semua = async () => {
     try {
-        let query = await Dosen.find({}).exec() // apakah find itu  ??
-        let data = query.map((v, i) => {
-            return {
-                nik: v.nik,
-                nama: v.nama,
-                email: v.email,
-                tlp: v.tlp,
-                matkul: v.matkul
-            }
-        })
-
-        return data
+        let query = await Dosen.find({}).populate([
+           {
+            path : 'id_matkul', 
+            model : matkul
+           } 
+        ]).exec()
+        
+        return query 
     } catch(err){
         throw err        
     }

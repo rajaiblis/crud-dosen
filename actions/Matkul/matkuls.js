@@ -1,17 +1,9 @@
-// ============== nama field dan type datanya =============
-// nomatkul:   Number,
-// namamatkul: String,
-// dosen:      String,
-// semester:   String 
-//                     Beberapa fungsi
-//    {buat, semua, dapatkan semua/semua, detail, ubah, hapus} 
-// ========================================================
-
 const Matkul = require('../../models/matkul');
+const dosen = require('../../models/dosen'); //import
 
 const buat = async(req) => {
     let { nomatkul, namamatkul, dosen, semester } = req.body
-    nomatkul = parseInt(nomatkul)
+
 
     let masukann_data = {
         nomatkul, namamatkul, dosen, semester
@@ -21,6 +13,7 @@ const buat = async(req) => {
 
     try {
         await data.save()
+
         
         return data
     } catch(err){
@@ -30,23 +23,42 @@ const buat = async(req) => {
 
 const semua = async () => {
     try {
-        let query = await Matkul.find({}).exec()
-        let data  = query.map((v, i) => {
-            return {
-                nomatkul:   v.nomatkul,
-                namamatkul: v.namamatkul,
-                dosen:      v.dosen,
-                semester:   v.semester
-            }
-        })
+        let query = await Matkul.find({}).populate([
+           {
+            path : 'dosen', 
+            model : dosen
+           } 
+        ]).exec()
         
-        return data 
-    } catch(err) {
-        throw err
-    }    
+        return query 
+    } catch(err){
+        throw err        
+    }
 }
+
+const update = async (id, updated_data) => {
+    let { nomatkul,namamatkul,dosen,tlp,semester  } = updated_data
+    
+    let data = {
+        nomatkul,namamatkul,dosen,tlp,semester
+    }      
+    
+
+    try{
+        let query = await Mahasiswa.findOneAndUpdate({
+            _id: id
+        }, data).exec()
+
+        return query
+    }catch(err){
+        throw err
+    }
+}
+
+
 
 module.exports = {
     buat,
-    semua
+    semua,
+    update
 }

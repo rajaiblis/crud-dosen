@@ -7,9 +7,7 @@ let dosenSchema = new Schema ({
     nama        : String,
     email       : String,
     tlp         : Number,
-    matkul      : String,
-    password    : String,
-    id_matkul   : String,
+    id_matkul   : String
    
 })
 

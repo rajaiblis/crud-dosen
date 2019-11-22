@@ -2,7 +2,7 @@ const express   = require('express');
 const router    = express.Router();
 const { create, getAll, getDetail, update, destroy } = require("../actions/Mahasiswa/mahasiswas");
 
-router.post("/", async (req, res) => {
+router.post("/buat", async (req, res) => {
     try {   
         let data = await create(req)
 
@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.get("/", async (req, res) => {
+router.get("/getAll", async (req, res) => {
     try {
         let data = await getAll()
 
