@@ -1,0 +1,22 @@
+{
+  "name": "relasi_akademi-level_2",
+  "version": "1.0.0",
+  "description": "belajar bikin CRUD untuk dosen, mahasiswa,matkul,TU,populate,mongo",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "ihsandroid",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "mongoose": "^5.7.12",
+    "nodemon": "^2.0.0",
+    "path": "^0.12.7"
+  }
+}
