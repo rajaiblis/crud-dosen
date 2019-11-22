@@ -1,18 +1,18 @@
-const express   = require('express')
-const router    = express.Router()
-const moment    = require("moment")
-const mongoose  = require('mongoose')
+const express = require('express');
+const router = express.Router();
+const moment = require("moment");
+const mongoose = require('mongoose');
 
 router.get('/', (req, res) => {
-    db_status       = mongoose.connection.readyState
-    db_status_name  = [ "disconnected", "connected", "connectiong", "disconnecting" ]
+    db_status = mongoose.connection.readyState
+    db_status_name = ["disconnecting","connected","connecting","disconnecting"]
 
     return res.send({
-        app_name: "NodeJS",
-        version: "5.0.0",
+        app_name: "Data Mahasiswa dan Dosen",
+        version: "1.0.0",
         server_time: moment().format(),
         database_status: db_status_name[db_status]
     })
-})
+});
 
 module.exports = router

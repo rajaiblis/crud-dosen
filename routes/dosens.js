@@ -1,41 +1,112 @@
-const express      = require('express')
-const router       = express.Router()
-const { check }    = require("express-validator")
-const DosenBuat    = require("../actions/Dosen/1buat.action")
-const DosenList    = require("../actions/Dosen/2list.action")
-const DosenTampil  = require("../actions/Dosen/3show.action")
-const DosenCari    = require("../actions/Dosen/4.cari.action")
-const DosenUbah    = require("../actions/Dosen/5.ubah.action")
-const DosenHapus   = require("../actions/Dosen/6.hapus.action")
-    
-router.post("/", [
-    check('nik').not().isEmpty(),
-    check('nama').not().isEmpty(),
-    check('email').not().isEmpty(),
-    check('tlp').not().isEmpty(),
-    check('matkul').not().isEmpty(),
-    check('password').not().isEmpty().isLength({ min: 8 })
-], async (req, res, next) => await new DosenBuat().exec(req, res, next))
+const express = require('express');
+const router = express.Router();
+const { buat, semua, detail, ubah, hapus } = require("../actions/Dosen/dosens");
+
+router.post("/", async (req, res) => {
+    try {
+        let data = await buat(req)
+
+        return res.status(200).json({ // yang dimaksud 200 json adalah respon sukses
+            status: "Sukses",
+            data,
+            message: "Data dosen berhasil dibuat !"   
+        })
+    } catch(err){
+        return res.status(400).json({ // yang dimaksud 400 json adalah respon error
+            status: "Error",
+            message: err.message
+        })
+    }
+});
+
+router.get("/", async (req, res) => {
+    try{
+        let data = await semua()
+
+        return res.send({
+            status: "Sukses",
+            data,
+            message: "Semua data tampil !"
+        })
+    } catch(err){
+        return res.status(400).json({
+            status: "Error",
+            message: err.message
+        })
+    }    
+});
+
+router.get("/:id", async (req, res) => {
+    try {
+        let { id } = req.params
+        let data = await detail(id)
+
+        return res.status(200).json({
+            status: "sukses",
+            data,
+            message: "Detail data dosen !"
+        })
+    } catch(err){
+        return res.status(400).json({
+            status: "Error",
+            message: err.message
+        })
+    }
+});
+
+router.put("/:id", async (req,res) => {
+    let { id } = req.params
+    let update_data = {
+        nik: req.body.nik,
+        nama: req.body.nama, 
+        email: req.body.email,
+        tlp: req.body.tlp,
+        matkul: req.body.matkul
+    }
+
+    try {
+        let data = await ubah(id, update_data)
+
+        return res.status(200).json({
+            status: "Sukses",
+            data,
+            message: "Data Dosen berhasil diubah !"
+        })
+    } catch(err){
+        return res.status(400).json({
+            status: "Error",
+            message: err.message
+        })
+    }
+});
+
+router.delete("/:id", async (req, res) => {
+    let { id } = req.params
+
+    try {
+        let data = await hapus(id)
+
+        return res.status(200).json({
+            status: "Sukses",
+            data,
+            message: "Data Dosen berhasil hapus"
+        })
+    } catch(err){
+        return res.status(400).json({
+            status: "Error",
+            message: err.message
+        })
+    }
+});
+
+module.exports = router
 
 
-router.get("/list", async (req, res, next) =>
-    await new DosenList().exec(req, res, next))
 
 
-router.get("/:id", async (req, res, next) => 
-    await new DosenTampil().exec(req, res, next))    
 
 
-router.get("/", async (req, res, next) =>
-    await new DosenCari().exec(req, res, next))    
 
 
-router.put("/:id", async (req, res, next) =>
-    await new DosenUbah().exec(req, res, next))
 
 
-router.delete("/:id", async (req, res, next) =>
-    await new DosenHapus().exec(req, res, next))
-
-
-module.exports = router    
